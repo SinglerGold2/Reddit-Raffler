@@ -1,7 +1,36 @@
 name: Reddit Raffler
 
+# Defines the input fields for the GitHub Actions UI
 on:
   workflow_dispatch:
+    inputs:
+      submission_url:
+        description: 'Reddit Post URL'
+        required: true
+        type: string
+      required_keyword:
+        description: 'Required Keyword (leave empty for none)'
+        required: false
+        type: string
+      min_age_days:
+        description: 'Minimum Account Age (Days)'
+        required: true
+        default: '0'
+        type: string
+      min_karma:
+        description: 'Minimum Karma'
+        required: true
+        default: '0'
+        type: string
+      image_mode:
+        description: 'Image Mode'
+        required: true
+        default: 'any'
+        type: choice
+        options:
+          - any
+          - only_image
+          - no_image
 
 jobs:
   run-raffler:
@@ -24,4 +53,9 @@ jobs:
         env:
           REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
           REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
+          INPUT_URL: ${{ github.event.inputs.submission_url }}
+          INPUT_KEYWORD: ${{ github.event.inputs.required_keyword }}
+          INPUT_MIN_AGE: ${{ github.event.inputs.min_age_days }}
+          INPUT_MIN_KARMA: ${{ github.event.inputs.min_karma }}
+          INPUT_IMAGE_MODE: ${{ github.event.inputs.image_mode }}
         run: python raffler.py
