@@ -1,13 +1,14 @@
-import praw
-import random
+import os
 import time
+import random
+import praw
 from prawcore.exceptions import NotFound, Forbidden
 
-# Initialize Reddit API client
-# Replace placeholders with your actual Reddit API credentials
+# Initialize Reddit API client using environment variables
+# Original values were: client_id="YOUR_CLIENT_ID", client_secret="YOUR_CLIENT_SECRET"
 reddit = praw.Reddit(
-    client_id="YOUR_CLIENT_ID",
-    client_secret="YOUR_CLIENT_SECRET",
+    client_id=os.environ.get("REDDIT_CLIENT_ID"),
+    client_secret=os.environ.get("REDDIT_CLIENT_SECRET"),
     user_agent="Raffle script by u/uk_uk"
 )
 
@@ -38,7 +39,7 @@ def run_raffle(submission_url, required_keyword=None, min_age_days=0, min_karma=
             
         author_name = comment.author.name
         
-        # 1. Filter: Exclude specific usernames (e.g., moderators)
+        # 1. Filter: Exclude specific usernames 
         if author_name.lower() in excluded_users_lower:
             continue
             
@@ -84,15 +85,17 @@ def run_raffle(submission_url, required_keyword=None, min_age_days=0, min_karma=
     winner = random.choice(unique_entries)
     return winner
 
-# Example usage
-# target_url = "https://www.reddit.com/r/..."
-# mods_to_exclude = ["AutoModerator", "uk_uk"]
-# 
-# print("Winner:", run_raffle(
-#     submission_url=target_url,
-#     required_keyword="teilnahme",
-#     min_age_days=30,           # Account must be at least 30 days old
-#     min_karma=100,             # Account must have at least 100 comment karma
-#     image_mode="only_image",   # Options: "any", "only_image", "no_image"
-#     excluded_users=mods_to_exclude
-# ))
+# Configuration for the raffle run
+target_url = "https://www.reddit.com/r/..."
+mods_to_exclude = ["AutoModerator", "uk_uk"]
+
+winner_name = run_raffle(
+    submission_url=target_url,
+    required_keyword="teilnahme",
+    min_age_days=30,           
+    min_karma=100,             
+    image_mode="any",          # Options: "any", "only_image", "no_image"
+    excluded_users=mods_to_exclude
+)
+
+print(f"The winner is: {winner_name}")
