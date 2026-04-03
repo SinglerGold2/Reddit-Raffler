@@ -84,19 +84,35 @@ def run_raffle(submission_url, required_keyword=None, min_age_days=0, min_karma=
     winner = random.choice(unique_entries)
     return winner
 
-# Configuration for the raffle run
-# Replace the target_url with the actual Reddit post URL
-target_url = "https://www.reddit.com/r/..."
+# Configuration for the raffle run using GitHub Actions inputs
+target_url = os.environ.get("INPUT_URL")
+keyword = os.environ.get("INPUT_KEYWORD", "")
+
+# Convert strings from GitHub UI to integers
+try:
+    min_age = int(os.environ.get("INPUT_MIN_AGE", 0))
+except ValueError:
+    min_age = 0
+    
+try:
+    min_karma = int(os.environ.get("INPUT_MIN_KARMA", 0))
+except ValueError:
+    min_karma = 0
+
+image_mode = os.environ.get("INPUT_IMAGE_MODE", "any")
 
 # Add usernames to exclude, e.g., moderators or the script owner
 mods_to_exclude = ["AutoModerator", "uk_uk"]
 
+# Only pass a string to required_keyword if it is not empty
+final_keyword = keyword if keyword.strip() != "" else None
+
 winner_name = run_raffle(
     submission_url=target_url,
-    required_keyword="teilnahme",
-    min_age_days=30,           
-    min_karma=100,             
-    image_mode="any",          # Options: "any", "only_image", "no_image"
+    required_keyword=final_keyword,
+    min_age_days=min_age,           
+    min_karma=min_karma,             
+    image_mode=image_mode,          
     excluded_users=mods_to_exclude
 )
 
