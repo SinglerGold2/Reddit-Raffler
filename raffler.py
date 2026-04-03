@@ -5,7 +5,6 @@ import praw
 from prawcore.exceptions import NotFound, Forbidden
 
 # Initialize Reddit API client using environment variables
-# Original values were: client_id="YOUR_CLIENT_ID", client_secret="YOUR_CLIENT_SECRET"
 reddit = praw.Reddit(
     client_id=os.environ.get("REDDIT_CLIENT_ID"),
     client_secret=os.environ.get("REDDIT_CLIENT_SECRET"),
@@ -86,7 +85,10 @@ def run_raffle(submission_url, required_keyword=None, min_age_days=0, min_karma=
     return winner
 
 # Configuration for the raffle run
+# Replace the target_url with the actual Reddit post URL
 target_url = "https://www.reddit.com/r/..."
+
+# Add usernames to exclude, e.g., moderators or the script owner
 mods_to_exclude = ["AutoModerator", "uk_uk"]
 
 winner_name = run_raffle(
