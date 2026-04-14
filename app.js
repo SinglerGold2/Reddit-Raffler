@@ -1,6 +1,329 @@
 (function () {
   'use strict';
 
+  // ---- Translation Data ----
+  const translations = {
+    'de': {
+      // DOM Elements (from HTML)
+      'title': '🎲 Reddit Raffler',
+      'subtitle': 'Gewinnspiel-Gewinner aus Subreddits ziehen',
+      'step1-title': '1. Subreddit wählen',
+      'sub-placeholder': 'subreddit name',
+      'sort-new': 'Neueste',
+      'sort-hot': 'Hot',
+      'sort-top': 'Top',
+      'sort-rising': 'Rising',
+      'btn-fetch': 'Posts laden',
+      'step2-title': '2. Posts filtern',
+      'filter-flair': 'Post-Flair',
+      'filter-flair-all': 'Alle Flairs',
+      'filter-from': 'Von',
+      'filter-to': 'Bis',
+      'filter-upvotes-min': 'Upvotes min',
+      'filter-upvotes-max': 'Upvotes max',
+      'btn-apply-filters': 'Filter anwenden',
+      'step3-title': '3. Posts auswählen',
+      'btn-select-all': 'Alle auswählen',
+      'btn-deselect-all': 'Alle abwählen',
+      'selected-count': '0 Posts ausgewählt',
+      'btn-load-more': 'Mehr laden',
+      'step4-title': '4. Gewinner bestimmen',
+      'mode-random': '🎲 Zufällig ziehen',
+      'mode-ranking': '🏆 Ranking erstellen',
+      'draw-count': 'Anzahl Gewinner',
+      'draw-ranking-by': 'Ranking nach',
+      'rank-score': 'Score (Upvotes)',
+      'rank-comments': 'Anzahl Kommentare',
+      'rank-date-asc': 'Datum (älteste zuerst)',
+      'rank-date-desc': 'Datum (neueste zuerst)',
+      'draw-unique': 'Nur ein Eintrag pro User (Duplikate zusammenfassen)',
+      'draw-exclude-del': '[deleted] User ausschließen',
+      'draw-exclude-auto': 'AutoModerator ausschließen',
+      'draw-exclude-mods': 'Subreddit-Moderatoren ausschließen',
+      'draw-exclude-users': 'User ausschließen (kommagetrennt)',
+      'draw-exclude-placeholder': 'z.B. user1, user2, user3',
+      'draw-verifiable': 'Verifizierbare Ziehung (kryptographisch nachprüfbar)',
+      'draw-entropy': 'Externer Zufallswert (optional)',
+      'draw-entropy-placeholder': 'Leer = Seed nur aus Post-IDs',
+      'btn-draw': '🎲 Gewinner ziehen!',
+      'winners-title': '🎉 Gewinner',
+      'verify-title': 'Verifikation',
+      'btn-verify-run': 'Pruefung ausfuehren',
+      'btn-verify-copy': 'Pruefpaket kopieren',
+      'btn-verify-dl': 'Pruefpaket herunterladen',
+      'verify-adv-title': 'Advanced: Vorab-Commit',
+      'verify-adv-note': 'Erzeuge vor der Ziehung einen Commit-Hash und veroeffentliche ihn.',
+      'btn-adv-commit': 'Vorab-Commit erzeugen',
+      'btn-adv-draw': 'Ziehung aus Commit ausfuehren',
+      'verify-import-label': 'Externes Pruefpaket (JSON)',
+      'btn-verify-import': 'Import pruefen',
+      'post-title': '📝 Gewinner-Post generieren',
+      'post-title-label': 'Post-Titel',
+      'post-title-placeholder': 'z.B. Gewinnspiel-Ergebnisse',
+      'post-intro-label': 'Einleitungstext',
+      'post-intro-placeholder': 'z.B. Vielen Dank an alle Teilnehmer!',
+      'post-prizes': 'Gewinne zuordnen',
+      'post-outro-label': 'Schlusstext',
+      'post-outro-placeholder': 'z.B. Herzlichen Glückwunsch!',
+      'btn-gen-post': '📝 Post generieren',
+      'post-preview': 'Vorschau',
+      'btn-copy-post': 'Kopieren',
+      'footer-text': 'Reddit Raffler - Verwendet die öffentliche Reddit-API',
+
+      // JS Dynamics
+      'err-404': 'Subreddit nicht gefunden',
+      'err-403': 'Subreddit ist privat',
+      'err-429': 'Rate-Limit erreicht - bitte kurz warten',
+      'err-http': 'Reddit-Fehler: HTTP',
+      'err-oauth': 'Mod-Liste erfordert OAuth',
+      'status-loading-posts': 'Lade Posts von r/',
+      'status-loading': '(laden...)',
+      'status-loaded-mods': 'Mods geladen',
+      'status-posts-loaded': 'Posts geladen',
+      'no-more-posts': 'Keine weiteren Posts',
+      'no-posts-found': 'Keine Posts gefunden',
+      'points': 'Punkte',
+      'comments': 'Kommentare',
+      'filter-active': 'Filter aktiv:',
+      'filter-none': 'Posts (kein Filter)',
+      'selected-of': 'von',
+      'selected-posts': 'Posts ausgewählt',
+      'btn-draw-random': 'Gewinner ziehen!',
+      'btn-draw-ranking': 'Ranking erstellen!',
+      'err-min-one-post': 'Bitte waehle mindestens einen Post aus.',
+      'err-no-posts-left': 'Nach Anwendung der Ausschluesse sind keine Posts uebrig.',
+      'verify-no-pkg': 'Kein Pruefpaket aktiv. Nutze verifizierbare Ziehung oder Ranking fuer reproduzierbare Pruefung.',
+      'verify-ready': 'Pruefpaket bereit. Du kannst jetzt pruefen, kopieren oder herunterladen.',
+      'verify-precommit-active': 'Vorab-Commit aktiv:',
+      'err-no-pkg-run': 'Kein Pruefpaket vorhanden.',
+      'verify-fail': 'FAIL:',
+      'err-json-insert': 'Bitte zuerst JSON einfuegen.',
+      'err-json-parse': 'JSON konnte nicht geparst werden.',
+      'err-no-pkg-copy': 'Kein Pruefpaket zum Kopieren vorhanden.',
+      'success-copied': 'Pruefpaket wurde in die Zwischenablage kopiert.',
+      'err-copy-fail': 'Kopieren fehlgeschlagen.',
+      'err-no-pkg-dl': 'Kein Pruefpaket zum Download vorhanden.',
+      'success-dl': 'Pruefpaket wurde heruntergeladen.',
+      'err-precommit-random': 'Vorab-Commit ist nur im Zufallsmodus verfuegbar.',
+      'success-precommit': 'PASS: Vorab-Commit erzeugt.',
+      'err-draw': 'Fehler bei der Ziehung:',
+      'err-no-precommit': 'Kein Vorab-Commit vorhanden.',
+      'err-snapshot-mismatch': 'Aktueller Snapshot passt nicht zum Vorab-Commit. Bitte neuen Commit erzeugen.',
+      'label-ranking': 'Ranking',
+      'label-winners': 'Gewinner',
+      'prize-placeholder': 'Gewinn eingeben...',
+      'post-prize-label': '[Gewinn]',
+      'post-criteria': 'Verwendete Kriterien:',
+      'post-mode': 'Modus:',
+      'post-mode-ranking': 'Ranking',
+      'post-mode-random': 'Zufaellige Ziehung',
+      'post-verifiable': 'Verifizierbare Ziehung:',
+      'post-yes': 'Ja',
+      'post-no': 'Nein',
+      'post-rank-by': 'Ranking nach:',
+      'post-rank-score': 'Score (Upvotes)',
+      'post-rank-comments': 'Anzahl Kommentare',
+      'post-rank-asc': 'Datum (aelteste zuerst)',
+      'post-rank-desc': 'Datum (neueste zuerst)',
+      'post-flair': 'Flair:',
+      'post-all': 'Alle',
+      'post-timerange': 'Zeitraum:',
+      'post-to': 'bis',
+      'post-postcount': 'Anzahl Posts:',
+      'post-dupes': 'Duplikate:',
+      'post-dupes-merged': 'Zusammengefasst (ein Eintrag pro User)',
+      'post-del-users': '[deleted] User:',
+      'post-excluded': 'Ausgeschlossen',
+      'post-automod': 'AutoModerator:',
+      'post-mods': 'Moderatoren:',
+      'post-exc-users': 'Ausgeschlossene User:',
+      'post-proof-fmt': 'Proof-Format:',
+      'post-pool-size': 'Poolgroesse (nach Filtern):',
+      'post-ext-entropy': 'Externer Zufallswert:',
+      'post-precommit': 'Vorab-Commit:',
+      'post-runs': 'Raffler-Ausfuehrungen (letzte 7 Tage, Flair',
+      'post-pkg-note': 'Pruefpaket: Kann in der Verifikationssektion exportiert werden.',
+      'copy-success': 'Kopiert!',
+      'copy-manual': 'Text markiert - bitte manuell kopieren'
+    },
+    'en': {
+      // DOM Elements (from HTML)
+      'title': '🎲 Reddit Raffler',
+      'subtitle': 'Draw raffle winners from subreddits',
+      'step1-title': '1. Select Subreddit',
+      'sub-placeholder': 'subreddit name',
+      'sort-new': 'New',
+      'sort-hot': 'Hot',
+      'sort-top': 'Top',
+      'sort-rising': 'Rising',
+      'btn-fetch': 'Fetch Posts',
+      'step2-title': '2. Filter Posts',
+      'filter-flair': 'Post Flair',
+      'filter-flair-all': 'All Flairs',
+      'filter-from': 'From',
+      'filter-to': 'To',
+      'filter-upvotes-min': 'Min Upvotes',
+      'filter-upvotes-max': 'Max Upvotes',
+      'btn-apply-filters': 'Apply Filters',
+      'step3-title': '3. Select Posts',
+      'btn-select-all': 'Select All',
+      'btn-deselect-all': 'Deselect All',
+      'selected-count': '0 Posts selected',
+      'btn-load-more': 'Load More',
+      'step4-title': '4. Determine Winners',
+      'mode-random': '🎲 Draw Randomly',
+      'mode-ranking': '🏆 Create Ranking',
+      'draw-count': 'Number of Winners',
+      'draw-ranking-by': 'Rank by',
+      'rank-score': 'Score (Upvotes)',
+      'rank-comments': 'Number of Comments',
+      'rank-date-asc': 'Date (oldest first)',
+      'rank-date-desc': 'Date (newest first)',
+      'draw-unique': 'Only one entry per user (merge duplicates)',
+      'draw-exclude-del': 'Exclude [deleted] users',
+      'draw-exclude-auto': 'Exclude AutoModerator',
+      'draw-exclude-mods': 'Exclude Subreddit Moderators',
+      'draw-exclude-users': 'Exclude users (comma-separated)',
+      'draw-exclude-placeholder': 'e.g. user1, user2, user3',
+      'draw-verifiable': 'Verifiable draw (cryptographically provable)',
+      'draw-entropy': 'External entropy (optional)',
+      'draw-entropy-placeholder': 'Empty = Seed from Post-IDs only',
+      'btn-draw': '🎲 Draw Winners!',
+      'winners-title': '🎉 Winners',
+      'verify-title': 'Verification',
+      'btn-verify-run': 'Run Verification',
+      'btn-verify-copy': 'Copy Proof Package',
+      'btn-verify-dl': 'Download Proof Package',
+      'verify-adv-title': 'Advanced: Pre-Commit',
+      'verify-adv-note': 'Generate and publish a commit hash before the draw.',
+      'btn-adv-commit': 'Generate Pre-Commit',
+      'btn-adv-draw': 'Execute Draw from Commit',
+      'verify-import-label': 'External Proof Package (JSON)',
+      'btn-verify-import': 'Verify Import',
+      'post-title': '📝 Generate Winner Post',
+      'post-title-label': 'Post Title',
+      'post-title-placeholder': 'e.g. Raffle Results',
+      'post-intro-label': 'Introductory text',
+      'post-intro-placeholder': 'e.g. Thanks to all participants!',
+      'post-prizes': 'Assign Prizes',
+      'post-outro-label': 'Closing text',
+      'post-outro-placeholder': 'e.g. Congratulations!',
+      'btn-gen-post': '📝 Generate Post',
+      'post-preview': 'Preview',
+      'btn-copy-post': 'Copy',
+      'footer-text': 'Reddit Raffler - Uses the public Reddit API',
+
+      // JS Dynamics
+      'err-404': 'Subreddit not found',
+      'err-403': 'Subreddit is private',
+      'err-429': 'Rate limit reached - please wait a moment',
+      'err-http': 'Reddit Error: HTTP',
+      'err-oauth': 'Mod list requires OAuth',
+      'status-loading-posts': 'Loading posts from r/',
+      'status-loading': '(loading...)',
+      'status-loaded-mods': 'Mods loaded',
+      'status-posts-loaded': 'Posts loaded',
+      'no-more-posts': 'No more posts',
+      'no-posts-found': 'No posts found',
+      'points': 'Points',
+      'comments': 'Comments',
+      'filter-active': 'Filter active:',
+      'filter-none': 'Posts (no filter)',
+      'selected-of': 'of',
+      'selected-posts': 'Posts selected',
+      'btn-draw-random': 'Draw Winners!',
+      'btn-draw-ranking': 'Create Ranking!',
+      'err-min-one-post': 'Please select at least one post.',
+      'err-no-posts-left': 'No posts left after applying exclusions.',
+      'verify-no-pkg': 'No proof package active. Use verifiable draw or ranking for reproducible proof.',
+      'verify-ready': 'Proof package ready. You can now verify, copy or download it.',
+      'verify-precommit-active': 'Pre-Commit active:',
+      'err-no-pkg-run': 'No proof package available.',
+      'verify-fail': 'FAIL:',
+      'err-json-insert': 'Please insert JSON first.',
+      'err-json-parse': 'JSON could not be parsed.',
+      'err-no-pkg-copy': 'No proof package available to copy.',
+      'success-copied': 'Proof package copied to clipboard.',
+      'err-copy-fail': 'Copy failed.',
+      'err-no-pkg-dl': 'No proof package available to download.',
+      'success-dl': 'Proof package downloaded.',
+      'err-precommit-random': 'Pre-Commit is only available in random mode.',
+      'success-precommit': 'PASS: Pre-Commit generated.',
+      'err-draw': 'Error during draw:',
+      'err-no-precommit': 'No Pre-Commit available.',
+      'err-snapshot-mismatch': 'Current snapshot does not match Pre-Commit. Please generate a new commit.',
+      'label-ranking': 'Ranking',
+      'label-winners': 'Winners',
+      'prize-placeholder': 'Enter prize...',
+      'post-prize-label': '[Prize]',
+      'post-criteria': 'Criteria used:',
+      'post-mode': 'Mode:',
+      'post-mode-ranking': 'Ranking',
+      'post-mode-random': 'Random Draw',
+      'post-verifiable': 'Verifiable Draw:',
+      'post-yes': 'Yes',
+      'post-no': 'No',
+      'post-rank-by': 'Rank by:',
+      'post-rank-score': 'Score (Upvotes)',
+      'post-rank-comments': 'Number of Comments',
+      'post-rank-asc': 'Date (oldest first)',
+      'post-rank-desc': 'Date (newest first)',
+      'post-flair': 'Flair:',
+      'post-all': 'All',
+      'post-timerange': 'Timeframe:',
+      'post-to': 'to',
+      'post-postcount': 'Number of Posts:',
+      'post-dupes': 'Duplicates:',
+      'post-dupes-merged': 'Merged (one entry per user)',
+      'post-del-users': '[deleted] Users:',
+      'post-excluded': 'Excluded',
+      'post-automod': 'AutoModerator:',
+      'post-mods': 'Moderators:',
+      'post-exc-users': 'Excluded Users:',
+      'post-proof-fmt': 'Proof Format:',
+      'post-pool-size': 'Pool size (after filters):',
+      'post-ext-entropy': 'External Entropy:',
+      'post-precommit': 'Pre-Commit:',
+      'post-runs': 'Raffler executions (last 7 days, flair',
+      'post-pkg-note': 'Proof Package: Can be exported in the verification section.',
+      'copy-success': 'Copied!',
+      'copy-manual': 'Text selected - please copy manually'
+    }
+  };
+
+  // Get current language state
+  let currentLang = localStorage.getItem('preferredLang') || 'de';
+
+  // Helper to get translation string
+  function t(key) {
+    return translations[currentLang][key] || key;
+  }
+
+  // Global function for HTML buttons
+  window.setLanguage = function (lang) {
+    currentLang = lang;
+    localStorage.setItem('preferredLang', lang);
+
+    document.querySelectorAll('[data-key]').forEach(element => {
+      const key = element.getAttribute('data-key');
+      if (translations[lang][key]) {
+        if (element.tagName === 'INPUT' || element.tagName === 'TEXTAREA') {
+          element.placeholder = translations[lang][key];
+        } else {
+          element.textContent = translations[lang][key];
+        }
+      }
+    });
+
+    // Re-render UI components that rely on JS strings if posts are loaded
+    if (allPosts.length > 0) {
+      applyFilters(); 
+      updateSelectedCount();
+      updateVerificationUi();
+      if (currentWinners.length > 0) displayWinners(currentWinners);
+    }
+  };
+
   // State
   let allPosts = [];
   let filteredPosts = [];
@@ -87,22 +410,22 @@
       const res = await fetch(`https://www.reddit.com/${path}?${params}`);
       json = await res.json();
     } catch {
-      // CORS blocked — use local proxy fallback
+      // CORS blocked - use local proxy fallback
       const res = await fetch(`/api/reddit/${path}?${params}`);
       if (!res.ok) {
-        if (res.status === 404) throw new Error('Subreddit nicht gefunden');
-        if (res.status === 403) throw new Error('Subreddit ist privat');
-        if (res.status === 429) throw new Error('Rate-Limit erreicht — bitte kurz warten');
-        throw new Error(`Reddit-Fehler: HTTP ${res.status}`);
+        if (res.status === 404) throw new Error(t('err-404'));
+        if (res.status === 403) throw new Error(t('err-403'));
+        if (res.status === 429) throw new Error(t('err-429'));
+        throw new Error(`${t('err-http')} ${res.status}`);
       }
       json = await res.json();
     }
 
     if (json.error) {
-      if (json.error === 404) throw new Error('Subreddit nicht gefunden');
-      if (json.error === 403) throw new Error('Subreddit ist privat');
-      if (json.error === 429) throw new Error('Rate-Limit erreicht — bitte kurz warten');
-      throw new Error(json.message || `Reddit-Fehler: ${json.error}`);
+      if (json.error === 404) throw new Error(t('err-404'));
+      if (json.error === 403) throw new Error(t('err-403'));
+      if (json.error === 429) throw new Error(t('err-429'));
+      throw new Error(json.message || `${t('err-http')} ${json.error}`);
     }
 
     const posts = (json.data?.children || []).map((child) => ({
@@ -133,7 +456,7 @@
     }
 
     if (json.error) {
-      throw new Error(json.error === 403 ? 'Mod-Liste erfordert OAuth' : `HTTP ${json.error}`);
+      throw new Error(json.error === 403 ? t('err-oauth') : `HTTP ${json.error}`);
     }
 
     return (json.data?.children || []).map((c) => c.name);
@@ -145,7 +468,7 @@
     if (!subreddit) return;
     fetchBtn.disabled = true;
     loadMoreBtn.disabled = true;
-    setStatus('loading', `Lade Posts von r/${subreddit}...`);
+    setStatus('loading', `${t('status-loading-posts')}${subreddit}...`);
 
     try {
       const data = await fetchPosts(subreddit, sortSelect.value, append ? afterCursor : null);
@@ -158,18 +481,18 @@
         subredditMods = [];
         excludeModsCheckbox.disabled = true;
         modStatus.className = 'mod-status loading';
-        modStatus.textContent = '(laden...)';
+        modStatus.textContent = t('status-loading');
         fetchMods(subreddit).then((mods) => {
           subredditMods = mods;
           excludeModsCheckbox.disabled = false;
           modStatus.className = 'mod-status loaded';
-          modStatus.textContent = `(${mods.length} Mods geladen)`;
+          modStatus.textContent = `(${mods.length} ${t('status-loaded-mods')})`;
         }).catch(() => {
           subredditMods = [];
           excludeModsCheckbox.checked = false;
           excludeModsCheckbox.disabled = true;
           modStatus.className = 'mod-status error';
-          modStatus.textContent = '(erfordert OAuth)';
+          modStatus.textContent = `(${t('err-oauth')})`;
         });
       }
 
@@ -178,17 +501,17 @@
       const newPosts = data.posts.filter((p) => !existingIds.has(p.id));
       allPosts = allPosts.concat(newPosts);
 
-      setStatus('', `${allPosts.length} Posts geladen`);
+      setStatus('', `${allPosts.length} ${t('status-posts-loaded')}`);
       populateFlairs();
       applyFilters();
       showSections();
 
       if (!afterCursor) {
         loadMoreBtn.disabled = true;
-        loadMoreBtn.textContent = 'Keine weiteren Posts';
+        loadMoreBtn.textContent = t('no-more-posts');
       } else {
         loadMoreBtn.disabled = false;
-        loadMoreBtn.textContent = 'Mehr laden';
+        loadMoreBtn.textContent = t('btn-load-more');
       }
     } catch (err) {
       setStatus('error', `Fehler: ${err.message}`);
@@ -216,7 +539,7 @@
     });
 
     const prev = flairSelect.value;
-    flairSelect.innerHTML = '<option value="">Alle Flairs</option>';
+    flairSelect.innerHTML = `<option value="">${t('filter-flair-all')}</option>`;
     [...flairs].sort().forEach((f) => {
       const opt = document.createElement('option');
       opt.value = f;
@@ -246,13 +569,14 @@
     // Update filter summary
     const parts = [];
     if (flair) parts.push(`Flair: "${flair}"`);
-    if (dateFrom.value) parts.push(`Von: ${dateFrom.value}`);
-    if (dateTo.value) parts.push(`Bis: ${dateTo.value}`);
+    if (dateFrom.value) parts.push(`${t('filter-from')}: ${dateFrom.value}`);
+    if (dateTo.value) parts.push(`${t('filter-to')}: ${dateTo.value}`);
     if (minScore !== null) parts.push(`Upvotes \u2265 ${minScore}`);
     if (maxScore !== null) parts.push(`Upvotes \u2264 ${maxScore}`);
+    
     filterSummary.textContent = parts.length
-      ? `Filter aktiv: ${parts.join(', ')} — ${filteredPosts.length} Posts`
-      : `${filteredPosts.length} Posts (kein Filter)`;
+      ? `${t('filter-active')} ${parts.join(', ')} - ${filteredPosts.length} Posts`
+      : `${filteredPosts.length} ${t('filter-none')}`;
 
     // Keep only valid selections
     const validIds = new Set(filteredPosts.map((p) => p.id));
@@ -267,7 +591,7 @@
     postList.innerHTML = '';
 
     if (filteredPosts.length === 0) {
-      postList.innerHTML = '<div style="padding:24px;text-align:center;color:var(--text-muted)">Keine Posts gefunden</div>';
+      postList.innerHTML = `<div style="padding:24px;text-align:center;color:var(--text-muted)">${t('no-posts-found')}</div>`;
       return;
     }
 
@@ -277,7 +601,7 @@
       div.dataset.id = post.id;
 
       const date = new Date(post.created * 1000);
-      const dateStr = date.toLocaleDateString('de-DE', {
+      const dateStr = date.toLocaleDateString(currentLang === 'de' ? 'de-DE' : 'en-US', {
         day: '2-digit',
         month: '2-digit',
         year: 'numeric',
@@ -290,8 +614,8 @@
           <div class="post-meta">
             <span>u/${escapeHtml(post.author)}</span>
             <span>${dateStr}</span>
-            <span>${post.score} Punkte</span>
-            <span>${post.numComments} Kommentare</span>
+            <span>${post.score} ${t('points')}</span>
+            <span>${post.numComments} ${t('comments')}</span>
             ${post.flair ? `<span class="post-flair">${escapeHtml(post.flair)}</span>` : ''}
           </div>
         </div>
@@ -321,7 +645,7 @@
   }
 
   function updateSelectedCount() {
-    selectedCount.textContent = `${selectedIds.size} von ${filteredPosts.length} Posts ausgewählt`;
+    selectedCount.textContent = `${selectedIds.size} ${t('selected-of')} ${filteredPosts.length} ${t('selected-posts')}`;
   }
 
   // ---- Select / Deselect ----
@@ -346,7 +670,7 @@
 
     rankingCriteriaGroup.classList.toggle('hidden', mode !== 'ranking');
     syncVerifiableControls();
-    drawBtn.textContent = mode === 'random' ? 'Gewinner ziehen!' : 'Ranking erstellen!';
+    drawBtn.textContent = mode === 'random' ? t('btn-draw-random') : t('btn-draw-ranking');
     updateVerificationUi();
   }
 
@@ -404,7 +728,7 @@
 
     let pool = filteredPosts.filter((p) => selectedIds.has(p.id));
     if (pool.length === 0) {
-      throw new Error('Bitte waehle mindestens einen Post aus.');
+      throw new Error(t('err-min-one-post'));
     }
 
     const excludedUsers = new Set();
@@ -427,7 +751,7 @@
     }
 
     if (pool.length === 0) {
-      throw new Error('Nach Anwendung der Ausschluesse sind keine Posts uebrig.');
+      throw new Error(t('err-no-posts-left'));
     }
 
     const drawParams = buildDrawParams(count, uniqueUsers, manualExcludes);
@@ -504,7 +828,7 @@
     return {
       subreddit: subreddit || '',
       flair: flairKey,
-      flairLabel: flair || 'Alle',
+      flairLabel: flair || t('post-all'),
       last7DaysCount: count,
       countedAt: new Date(now).toISOString(),
     };
@@ -704,13 +1028,13 @@
     }
 
     if (!hasProof) {
-      setUiStatus(verifyStatus, '', 'Kein Pruefpaket aktiv. Nutze verifizierbare Ziehung oder Ranking fuer reproduzierbare Pruefung.');
-    } else if (!verifyStatus.textContent || verifyStatus.textContent.startsWith('Kein Pruefpaket')) {
-      setUiStatus(verifyStatus, '', 'Pruefpaket bereit. Du kannst jetzt pruefen, kopieren oder herunterladen.');
+      setUiStatus(verifyStatus, '', t('verify-no-pkg'));
+    } else if (!verifyStatus.textContent || verifyStatus.textContent.startsWith(t('verify-no-pkg'))) {
+      setUiStatus(verifyStatus, '', t('verify-ready'));
     }
 
     if (pendingPreCommit) {
-      setUiStatus(precommitStatus, '', `Vorab-Commit aktiv:\n${pendingPreCommit.commitHash}`);
+      setUiStatus(precommitStatus, '', `${t('verify-precommit-active')}\n${pendingPreCommit.commitHash}`);
     } else if (!precommitStatus.textContent.startsWith('PASS')) {
       setUiStatus(precommitStatus, '', '');
     }
@@ -718,7 +1042,7 @@
 
   async function verifyCurrentProof() {
     if (!currentProofPackage) {
-      setUiStatus(verifyStatus, 'error', 'Kein Pruefpaket vorhanden.');
+      setUiStatus(verifyStatus, 'error', t('err-no-pkg-run'));
       return;
     }
 
@@ -726,14 +1050,14 @@
     if (result.ok) {
       setUiStatus(verifyStatus, 'success', result.info.join('\n'));
     } else {
-      setUiStatus(verifyStatus, 'error', `FAIL:\n- ${result.errors.join('\n- ')}`);
+      setUiStatus(verifyStatus, 'error', `${t('verify-fail')}\n- ${result.errors.join('\n- ')}`);
     }
   }
 
   async function verifyImportedProof() {
     const raw = proofImportInput.value.trim();
     if (!raw) {
-      setUiStatus(verifyImportStatus, 'error', 'Bitte zuerst JSON einfuegen.');
+      setUiStatus(verifyImportStatus, 'error', t('err-json-insert'));
       return;
     }
 
@@ -741,7 +1065,7 @@
     try {
       parsed = JSON.parse(raw);
     } catch {
-      setUiStatus(verifyImportStatus, 'error', 'JSON konnte nicht geparst werden.');
+      setUiStatus(verifyImportStatus, 'error', t('err-json-parse'));
       return;
     }
 
@@ -749,27 +1073,27 @@
     if (result.ok) {
       setUiStatus(verifyImportStatus, 'success', result.info.join('\n'));
     } else {
-      setUiStatus(verifyImportStatus, 'error', `FAIL:\n- ${result.errors.join('\n- ')}`);
+      setUiStatus(verifyImportStatus, 'error', `${t('verify-fail')}\n- ${result.errors.join('\n- ')}`);
     }
   }
 
   async function copyProofPackage() {
     if (!currentProofPackage) {
-      setUiStatus(verifyStatus, 'error', 'Kein Pruefpaket zum Kopieren vorhanden.');
+      setUiStatus(verifyStatus, 'error', t('err-no-pkg-copy'));
       return;
     }
 
     try {
       await navigator.clipboard.writeText(JSON.stringify(currentProofPackage, null, 2));
-      setUiStatus(verifyStatus, 'success', 'Pruefpaket wurde in die Zwischenablage kopiert.');
+      setUiStatus(verifyStatus, 'success', t('success-copied'));
     } catch {
-      setUiStatus(verifyStatus, 'error', 'Kopieren fehlgeschlagen.');
+      setUiStatus(verifyStatus, 'error', t('err-copy-fail'));
     }
   }
 
   function downloadProofPackage() {
     if (!currentProofPackage) {
-      setUiStatus(verifyStatus, 'error', 'Kein Pruefpaket zum Download vorhanden.');
+      setUiStatus(verifyStatus, 'error', t('err-no-pkg-dl'));
       return;
     }
 
@@ -783,13 +1107,13 @@
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    setUiStatus(verifyStatus, 'success', 'Pruefpaket wurde heruntergeladen.');
+    setUiStatus(verifyStatus, 'success', t('success-dl'));
   }
 
   async function createPreCommit() {
     try {
       if (drawMode !== 'random') {
-        throw new Error('Vorab-Commit ist nur im Zufallsmodus verfuegbar.');
+        throw new Error(t('err-precommit-random'));
       }
 
       const drawContext = getDrawContext();
@@ -806,7 +1130,7 @@
       };
 
       precommitDetails.open = true;
-      setUiStatus(precommitStatus, 'success', `PASS: Vorab-Commit erzeugt.\nCommit-Hash:\n${commitHash}`);
+      setUiStatus(precommitStatus, 'success', `${t('success-precommit')}\nCommit-Hash:\n${commitHash}`);
       updateVerificationUi();
     } catch (err) {
       setUiStatus(precommitStatus, 'error', `Fehler: ${err.message}`);
@@ -838,13 +1162,13 @@
         currentProofPackage = await buildProofPackage(snapshot, winners, { weeklyStats });
       } else if (options.usePreCommit) {
         if (!pendingPreCommit) {
-          throw new Error('Kein Vorab-Commit vorhanden.');
+          throw new Error(t('err-no-precommit'));
         }
 
         const snapshot = buildDrawSnapshot(drawContext.pool, drawContext.drawParams, 'random');
         const snapshotHash = await sha256Object(snapshot);
         if (!hashEquals(snapshotHash, pendingPreCommit.snapshotHash)) {
-          throw new Error('Aktueller Snapshot passt nicht zum Vorab-Commit. Bitte neuen Commit erzeugen.');
+          throw new Error(t('err-snapshot-mismatch'));
         }
 
         const drawHash = await createDrawHash(snapshotHash, pendingPreCommit);
@@ -876,15 +1200,15 @@
       syncVerificationStateFromProof();
       displayWinners(winners);
       if (currentProofPackage) {
-        setUiStatus(verifyStatus, '', 'Pruefpaket bereit. Du kannst jetzt pruefen, kopieren oder herunterladen.');
+        setUiStatus(verifyStatus, '', t('verify-ready'));
       } else {
-        setUiStatus(verifyStatus, '', 'Kein Pruefpaket aktiv. Nutze verifizierbare Ziehung oder Ranking fuer reproduzierbare Pruefung.');
+        setUiStatus(verifyStatus, '', t('verify-no-pkg'));
       }
       setUiStatus(verifyImportStatus, '', '');
       updateVerificationUi();
     } catch (err) {
       console.error('Draw error:', err.message);
-      alert(`Fehler bei der Ziehung: ${err.message}`);
+      alert(`${t('err-draw')} ${err.message}`);
     }
   }
 
@@ -1004,11 +1328,11 @@
 
   function formatRankValue(post, criteria) {
     switch (criteria) {
-      case 'score': return `${post.score} Punkte`;
-      case 'numComments': return `${post.numComments} Kommentare`;
+      case 'score': return `${post.score} ${t('points')}`;
+      case 'numComments': return `${post.numComments} ${t('comments')}`;
       case 'created-asc':
       case 'created-desc':
-        return new Date(post.created * 1000).toLocaleDateString('de-DE', {
+        return new Date(post.created * 1000).toLocaleDateString(currentLang === 'de' ? 'de-DE' : 'en-US', {
           day: '2-digit', month: '2-digit', year: 'numeric',
         });
       default: return '';
@@ -1029,7 +1353,7 @@
     winnersList.innerHTML = '';
 
     const heading = winnersSection.querySelector('h2');
-    heading.textContent = drawMode === 'ranking' ? 'Ranking' : 'Gewinner';
+    heading.textContent = drawMode === 'ranking' ? t('label-ranking') : t('label-winners');
 
     winners.forEach((w, i) => {
       const card = document.createElement('div');
@@ -1062,7 +1386,7 @@
       row.className = 'prize-row';
       row.innerHTML = `
         <span class="prize-label">#${i + 1} u/${escapeHtml(w.user)}</span>
-        <input type="text" class="prize-input" placeholder="Gewinn eingeben..." data-index="${i}">
+        <input type="text" class="prize-input" placeholder="${t('prize-placeholder')}" data-index="${i}">
       `;
       prizesList.appendChild(row);
     });
@@ -1091,7 +1415,7 @@
       lines.push('');
     }
 
-    const label = isRanking ? 'Ranking' : 'Gewinner';
+    const label = isRanking ? t('label-ranking') : t('label-winners');
     lines.push(`## ${label}`);
     lines.push('');
 
@@ -1108,7 +1432,7 @@
       if (prize) {
         line += ` - ${prize}`;
       } else if (showPrizes) {
-        line += ' - *[Gewinn]*';
+        line += ` - *${t('post-prize-label')}*`;
       }
       lines.push(line);
     });
@@ -1122,64 +1446,64 @@
 
     lines.push('---');
     lines.push('');
-    lines.push('*Verwendete Kriterien:*');
+    lines.push(`*${t('post-criteria')}*`);
     lines.push('');
-    lines.push(`- **Modus:** ${isRanking ? 'Ranking' : 'Zufaellige Ziehung'}`);
+    lines.push(`- **${t('post-mode')}** ${isRanking ? t('post-mode-ranking') : t('post-mode-random')}`);
     if (!isRanking) {
-      lines.push(`- **Verifizierbare Ziehung:** ${lastVerification ? 'Ja' : 'Nein'}`);
+      lines.push(`- **${t('post-verifiable')}** ${lastVerification ? t('post-yes') : t('post-no')}`);
     }
     if (isRanking) {
       const criteriaLabels = {
-        score: 'Score (Upvotes)',
-        numComments: 'Anzahl Kommentare',
-        'created-asc': 'Datum (aelteste zuerst)',
-        'created-desc': 'Datum (neueste zuerst)',
+        score: t('post-rank-score'),
+        numComments: t('post-rank-comments'),
+        'created-asc': t('post-rank-asc'),
+        'created-desc': t('post-rank-desc'),
       };
-      lines.push(`- **Ranking nach:** ${criteriaLabels[rankingCriteria.value]}`);
+      lines.push(`- **${t('post-rank-by')}** ${criteriaLabels[rankingCriteria.value]}`);
     }
 
     const flair = flairSelect.value;
-    lines.push(`- **Flair:** ${flair || 'Alle'}`);
+    lines.push(`- **${t('post-flair')}** ${flair || t('post-all')}`);
     if (dateFrom.value || dateTo.value) {
-      const range = [dateFrom.value || '-', dateTo.value || '-'].join(' bis ');
-      lines.push(`- **Zeitraum:** ${range}`);
+      const range = [dateFrom.value || '-', dateTo.value || '-'].join(` ${t('post-to')} `);
+      lines.push(`- **${t('post-timerange')}** ${range}`);
     }
-    lines.push(`- **Anzahl Posts:** ${selectedIds.size}`);
+    lines.push(`- **${t('post-postcount')}** ${selectedIds.size}`);
 
     if (uniqueUsersCheckbox.checked) {
-      lines.push('- **Duplikate:** Zusammengefasst (ein Eintrag pro User)');
+      lines.push(`- **${t('post-dupes')}** ${t('post-dupes-merged')}`);
     }
     if (excludeDeletedCheckbox.checked) {
-      lines.push('- **[deleted] User:** Ausgeschlossen');
+      lines.push(`- **${t('post-del-users')}** ${t('post-excluded')}`);
     }
     if (excludeAutomodCheckbox.checked) {
-      lines.push('- **AutoModerator:** Ausgeschlossen');
+      lines.push(`- **${t('post-automod')}** ${t('post-excluded')}`);
     }
     if (excludeModsCheckbox.checked && subredditMods.length > 0) {
-      lines.push(`- **Moderatoren:** Ausgeschlossen (${subredditMods.length} Mods)`);
+      lines.push(`- **${t('post-mods')}** ${t('post-excluded')} (${subredditMods.length} Mods)`);
     }
 
     const manualExcludesPost = parseManualExcludes();
     if (manualExcludesPost.length > 0) {
-      lines.push(`- **Ausgeschlossene User:** ${manualExcludesPost.map((u) => 'u/' + u).join(', ')}`);
+      lines.push(`- **${t('post-exc-users')}** ${manualExcludesPost.map((u) => 'u/' + u).join(', ')}`);
     }
 
     if (lastVerification) {
-      lines.push(`- **Proof-Format:** ${lastVerification.proofVersion}`);
+      lines.push(`- **${t('post-proof-fmt')}** ${lastVerification.proofVersion}`);
       lines.push(`- **Draw-Hash:** \`${lastVerification.drawHash}\``);
       lines.push(`- **Pool-Hash:** \`${lastVerification.poolHash}\``);
       lines.push(`- **Parameter-Hash:** \`${lastVerification.paramsHash}\``);
-      lines.push(`- **Poolgroesse (nach Filtern):** ${lastVerification.poolSize}`);
+      lines.push(`- **${t('post-pool-size')}** ${lastVerification.poolSize}`);
       if (lastVerification.entropy) {
-        lines.push(`- **Externer Zufallswert:** \`${lastVerification.entropy}\``);
+        lines.push(`- **${t('post-ext-entropy')}** \`${lastVerification.entropy}\``);
       }
       if (lastVerification.commitHash) {
-        lines.push(`- **Vorab-Commit:** \`${lastVerification.commitHash}\``);
+        lines.push(`- **${t('post-precommit')}** \`${lastVerification.commitHash}\``);
       }
       if (lastVerification.weeklyRunsForFlair !== null) {
-        lines.push(`- **Raffler-Ausfuehrungen (letzte 7 Tage, Flair "${lastVerification.flairLabel || 'Alle'}"):** ${lastVerification.weeklyRunsForFlair}`);
+        lines.push(`- **${t('post-runs')} "${lastVerification.flairLabel || t('post-all')}"):** ${lastVerification.weeklyRunsForFlair}`);
       }
-      lines.push('- **Pruefpaket:** Kann in der Verifikationssektion exportiert werden.');
+      lines.push(`- **${t('post-pkg-note')}**`);
     }
 
     lines.push('');
@@ -1194,14 +1518,14 @@
     const text = generatedPostOutput.textContent;
     try {
       await navigator.clipboard.writeText(text);
-      copyFeedback.textContent = 'Kopiert!';
+      copyFeedback.textContent = t('copy-success');
     } catch {
       const range = document.createRange();
       range.selectNodeContents(generatedPostOutput);
       const sel = window.getSelection();
       sel.removeAllRanges();
       sel.addRange(range);
-      copyFeedback.textContent = 'Text markiert - bitte manuell kopieren';
+      copyFeedback.textContent = t('copy-manual');
     }
     setTimeout(() => { copyFeedback.textContent = ''; }, 3000);
   }
@@ -1292,4 +1616,6 @@
 
   syncVerifiableControls();
   updateVerificationUi();
+  // Call once on load to ensure sync
+  window.setLanguage(currentLang);
 })();
