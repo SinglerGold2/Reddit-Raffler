@@ -36,6 +36,32 @@ body {
   padding: clamp(14px, 2.4vw, 24px) clamp(12px, 2.2vw, 20px);
 }
 
+/* Language Switcher */
+.language-switcher {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.language-switcher button {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 6px 12px;
+  cursor: pointer;
+  font-weight: 600;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  transition: all 0.2s;
+}
+
+.language-switcher button:hover {
+  background: var(--bg-card-hover);
+  color: var(--text);
+  border-color: var(--accent);
+}
+
 /* Header */
 header {
   text-align: center;
