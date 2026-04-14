@@ -5,14 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Reddit Raffler</title>
   <link rel="stylesheet" href="style.css">
-  <style>
-    /* Basic styling for the language switcher */
-    .language-switcher { text-align: right; padding: 10px; }
-    .language-switcher button { margin-left: 5px; cursor: pointer; }
-  </style>
 </head>
 <body>
   <div class="app">
+    
     <div class="language-switcher">
       <button onclick="setLanguage('de')">DE</button>
       <button onclick="setLanguage('en')">EN</button>
@@ -146,7 +142,7 @@
             </label>
           </div>
           <div class="setting-group exclude-users-group hidden" id="entropy-group">
-            <label for="external-entropy" data-key="draw-entropy">Externer Zufallswert (optional, z.B. Bitcoin-Block-Hash)</label>
+            <label for="external-entropy" data-key="draw-entropy">Externer Zufallswert (optional)</label>
             <input type="text" id="external-entropy" placeholder="Leer = Seed nur aus Post-IDs" data-key="draw-entropy-placeholder">
           </div>
         </div>
@@ -171,7 +167,7 @@
         <details id="precommit-details" class="advanced-verification">
           <summary data-key="verify-adv-title">Advanced: Vorab-Commit</summary>
           <p class="verify-note" data-key="verify-adv-note">
-            Erzeuge vor der Ziehung einen Commit-Hash und veroeffentliche ihn. Danach kann die Ziehung gegen diesen Commit nachvollzogen werden.
+            Erzeuge vor der Ziehung einen Commit-Hash und veroeffentliche ihn.
           </p>
           <div class="verification-actions">
             <button id="create-precommit-btn" class="btn secondary" data-key="btn-adv-commit">Vorab-Commit erzeugen</button>
@@ -194,12 +190,12 @@
         <div class="post-gen-settings">
           <div class="setting-group">
             <label for="post-title-input" data-key="post-title-label">Post-Titel</label>
-            <input type="text" id="post-title-input" placeholder="z.B. Gewinnspiel-Ergebnisse März 2026" data-key="post-title-placeholder">
+            <input type="text" id="post-title-input" placeholder="z.B. Gewinnspiel-Ergebnisse" data-key="post-title-placeholder">
           </div>
 
           <div class="setting-group">
-            <label for="post-intro-input" data-key="post-intro-label">Einleitungstext (optional)</label>
-            <textarea id="post-intro-input" rows="2" placeholder="z.B. Vielen Dank an alle Teilnehmer! Hier sind die Gewinner:" data-key="post-intro-placeholder"></textarea>
+            <label for="post-intro-input" data-key="post-intro-label">Einleitungstext</label>
+            <textarea id="post-intro-input" rows="2" placeholder="z.B. Vielen Dank an alle Teilnehmer!" data-key="post-intro-placeholder"></textarea>
           </div>
 
           <div class="setting-group">
@@ -212,8 +208,8 @@
           <div id="prizes-list" class="prizes-list hidden"></div>
 
           <div class="setting-group">
-            <label for="post-outro-input" data-key="post-outro-label">Schlusstext (optional)</label>
-            <textarea id="post-outro-input" rows="2" placeholder="z.B. Herzlichen Glückwunsch! Die Gewinner werden per DM kontaktiert." data-key="post-outro-placeholder"></textarea>
+            <label for="post-outro-input" data-key="post-outro-label">Schlusstext</label>
+            <textarea id="post-outro-input" rows="2" placeholder="z.B. Herzlichen Glückwunsch!" data-key="post-outro-placeholder"></textarea>
           </div>
         </div>
 
