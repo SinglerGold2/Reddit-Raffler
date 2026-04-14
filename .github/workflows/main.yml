@@ -1,0 +1,13 @@
+name: HTML Validation
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check HTML syntax
+        run: |
+          # Beispiel: Nutze ein Tool wie html-validate
+          npm install -g html-validate
+          html-validate index.html
