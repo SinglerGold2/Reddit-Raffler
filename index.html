@@ -7,11 +7,10 @@
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div class="app">
-    
+  <div class="app">    
     <div class="language-switcher">
-      <button onclick="setLanguage('de')">DE</button>
-      <button onclick="setLanguage('en')">EN</button>
+      <button type="button" onclick="setLanguage('de')">DE</button>
+      <button type="button" onclick="setLanguage('en')">EN</button>
     </div>
 
     <header>
@@ -31,7 +30,7 @@
             <option value="top" data-key="sort-top">Top</option>
             <option value="rising" data-key="sort-rising">Rising</option>
           </select>
-          <button id="fetch-btn" class="btn primary" data-key="btn-fetch">Posts laden</button>
+          <button type="button" id="fetch-btn" class="btn primary" data-key="btn-fetch">Posts laden</button>
         </div>
         <div id="fetch-status" class="status"></div>
       </section>
@@ -63,7 +62,7 @@
           </div>
           <div class="filter-group">
             <label>&nbsp;</label>
-            <button id="apply-filters-btn" class="btn secondary" data-key="btn-apply-filters">Filter anwenden</button>
+            <button type="button" id="apply-filters-btn" class="btn secondary" data-key="btn-apply-filters">Filter anwenden</button>
           </div>
         </div>
         <div class="filter-summary" id="filter-summary"></div>
@@ -73,14 +72,14 @@
         <div class="posts-header">
           <h2 data-key="step3-title">3. Posts auswählen</h2>
           <div class="posts-actions">
-            <button id="select-all-btn" class="btn small" data-key="btn-select-all">Alle auswählen</button>
-            <button id="deselect-all-btn" class="btn small" data-key="btn-deselect-all">Alle abwählen</button>
+            <button type="button" id="select-all-btn" class="btn small" data-key="btn-select-all">Alle auswählen</button>
+            <button type="button" id="deselect-all-btn" class="btn small" data-key="btn-deselect-all">Alle abwählen</button>
           </div>
         </div>
         <div class="post-list" id="post-list"></div>
         <div class="posts-footer">
           <span id="selected-count" data-key="selected-count">0 Posts ausgewählt</span>
-          <button id="load-more-btn" class="btn secondary" data-key="btn-load-more">Mehr laden</button>
+          <button type="button" id="load-more-btn" class="btn secondary" data-key="btn-load-more">Mehr laden</button>
         </div>
       </section>
 
@@ -88,8 +87,8 @@
         <h2 data-key="step4-title">4. Gewinner bestimmen</h2>
 
         <div class="mode-toggle">
-          <button class="mode-btn active" data-mode="random" data-key="mode-random">🎲 Zufällig ziehen</button>
-          <button class="mode-btn" data-mode="ranking" data-key="mode-ranking">🏆 Ranking erstellen</button>
+          <button type="button" class="mode-btn active" data-mode="random" data-key="mode-random">🎲 Zufällig ziehen</button>
+          <button type="button" class="mode-btn" data-mode="ranking" data-key="mode-ranking">🏆 Ranking erstellen</button>
         </div>
 
         <div class="draw-settings">
@@ -146,7 +145,7 @@
             <input type="text" id="external-entropy" placeholder="Leer = Seed nur aus Post-IDs" data-key="draw-entropy-placeholder">
           </div>
         </div>
-        <button id="draw-btn" class="btn primary large" data-key="btn-draw">🎲 Gewinner ziehen!</button>
+        <button type="button" id="draw-btn" class="btn primary large" data-key="btn-draw">🎲 Gewinner ziehen!</button>
       </section>
 
       <section class="card hidden" id="winners-section">
@@ -158,9 +157,9 @@
         <h2 data-key="verify-title">Verifikation</h2>
 
         <div class="verification-actions">
-          <button id="verify-current-btn" class="btn secondary" data-key="btn-verify-run">Pruefung ausfuehren</button>
-          <button id="copy-proof-btn" class="btn secondary" disabled data-key="btn-verify-copy">Pruefpaket kopieren</button>
-          <button id="download-proof-btn" class="btn secondary" disabled data-key="btn-verify-dl">Pruefpaket herunterladen</button>
+          <button type="button" id="verify-current-btn" class="btn secondary" data-key="btn-verify-run">Pruefung ausfuehren</button>
+          <button type="button" id="copy-proof-btn" class="btn secondary" disabled data-key="btn-verify-copy">Pruefpaket kopieren</button>
+          <button type="button" id="download-proof-btn" class="btn secondary" disabled data-key="btn-verify-dl">Pruefpaket herunterladen</button>
         </div>
         <div id="verify-status" class="status"></div>
 
@@ -170,8 +169,8 @@
             Erzeuge vor der Ziehung einen Commit-Hash und veroeffentliche ihn.
           </p>
           <div class="verification-actions">
-            <button id="create-precommit-btn" class="btn secondary" data-key="btn-adv-commit">Vorab-Commit erzeugen</button>
-            <button id="draw-from-commit-btn" class="btn secondary" disabled data-key="btn-adv-draw">Ziehung aus Commit ausfuehren</button>
+            <button type="button" id="create-precommit-btn" class="btn secondary" data-key="btn-adv-commit">Vorab-Commit erzeugen</button>
+            <button type="button" id="draw-from-commit-btn" class="btn secondary" disabled data-key="btn-adv-draw">Ziehung aus Commit ausfuehren</button>
           </div>
           <div id="precommit-status" class="status"></div>
         </details>
@@ -179,7 +178,7 @@
         <div class="verify-import">
           <label for="proof-import-input" data-key="verify-import-label">Externes Pruefpaket (JSON)</label>
           <textarea id="proof-import-input" rows="6" placeholder='{"version":"raffler-proof-v1", "...": "..."}'></textarea>
-          <button id="verify-import-btn" class="btn secondary" data-key="btn-verify-import">Import pruefen</button>
+          <button type="button" id="verify-import-btn" class="btn secondary" data-key="btn-verify-import">Import pruefen</button>
           <div id="verify-import-status" class="status"></div>
         </div>
       </section>
@@ -213,12 +212,12 @@
           </div>
         </div>
 
-        <button id="generate-post-btn" class="btn primary large" data-key="btn-gen-post">📝 Post generieren</button>
+        <button type="button" id="generate-post-btn" class="btn primary large" data-key="btn-gen-post">📝 Post generieren</button>
 
         <div id="generated-post-wrapper" class="hidden">
           <div class="generated-post-header">
             <h3 data-key="post-preview">Vorschau</h3>
-            <button id="copy-post-btn" class="btn small secondary" data-key="btn-copy-post">Kopieren</button>
+            <button type="button" id="copy-post-btn" class="btn small secondary" data-key="btn-copy-post">Kopieren</button>
           </div>
           <pre id="generated-post-output" class="generated-post-output"></pre>
           <span id="copy-feedback" class="copy-feedback"></span>
